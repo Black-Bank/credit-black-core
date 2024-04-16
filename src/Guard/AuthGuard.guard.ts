@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import Crypto from './Crypto.service';
+import 'dotenv/config';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -20,7 +21,8 @@ export class AuthGuard implements CanActivate {
     if (!authHeader) {
       throw new ForbiddenException('No authorization header');
     } else {
-      const isAuthenticated = authHeader === 'hmg-auth-01';
+      const isAuthenticated =
+        authHeader === (process.env.AUTH_HEADER as string);
       return isAuthenticated;
     }
   }
