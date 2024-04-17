@@ -14,3 +14,11 @@ export class AuthDTO {
   })
   password: string;
 }
+
+export class TokenDTO {
+  @IsString()
+  @IsNotEmpty({
+    message: 'Enter your token',
+  })
+  token: string;
+}

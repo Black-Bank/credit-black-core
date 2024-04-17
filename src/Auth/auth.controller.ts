@@ -1,6 +1,6 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { AuthDTO } from './auth.dto';
+import { AuthDTO, TokenDTO } from './auth.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 
@@ -18,8 +18,28 @@ export class AuthController {
     description: 'Credenciais de autenticação do usuário',
     schema: {
       properties: {
+        token: {
+          example: 'string',
+        },
+      },
+    },
+  })
+  @UseGuards(AuthGuard)
+  async signIn(@Body() token: TokenDTO): Promise<any> {
+    return await this.authService.auth(token);
+  }
+
+  @Post('encrypt')
+  @ApiOperation({
+    summary: 'Obter token para login',
+  })
+  @ApiBearerAuth('AUTH_HEADER')
+  @ApiBody({
+    description: 'Credenciais de autenticação do usuário',
+    schema: {
+      properties: {
         email: {
-          example: 'example@example.com',
+          example: 'admin@gmail.com',
         },
         password: {
           example: 'senha123',
@@ -27,8 +47,26 @@ export class AuthController {
       },
     },
   })
-  @UseGuards(AuthGuard)
-  async signIn(@Body() user: AuthDTO): Promise<any> {
-    return await this.authService.auth(user);
+  async encrypt(@Body() user: AuthDTO) {
+    return await this.authService.encrypt(user);
+  }
+
+  @Post('decrypt')
+  @ApiOperation({
+    summary: 'Obter token para login',
+  })
+  @ApiBearerAuth('AUTH_HEADER')
+  @ApiBody({
+    description: 'Credenciais de autenticação do usuário',
+    schema: {
+      properties: {
+        token: {
+          example: 'string',
+        },
+      },
+    },
+  })
+  async decrypt(@Body() token: TokenDTO) {
+    return await this.authService.decrypt(token.token);
   }
 }
