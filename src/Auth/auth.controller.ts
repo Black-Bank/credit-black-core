@@ -28,7 +28,7 @@ export class AuthController {
     },
   })
   @UseGuards(AuthGuard)
-  async getAuthToken(@Body() user: AuthDTO): Promise<{ token: string }> {
+  async signIn(@Body() user: AuthDTO): Promise<any> {
     return await this.authService.auth(user);
   }
 }

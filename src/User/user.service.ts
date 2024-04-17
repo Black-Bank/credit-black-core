@@ -31,4 +31,12 @@ export class UserService {
 
     return userCreated;
   }
+
+  async findByEmail(email: string) {
+    return await this.prisma.user.findFirst({
+      where: {
+        email: email,
+      },
+    });
+  }
 }
