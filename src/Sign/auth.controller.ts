@@ -4,7 +4,7 @@ import { AuthDTO } from './auth.dto';
 import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 
-@ApiTags('SignIn')
+@ApiTags('Auth')
 @Controller('login')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}

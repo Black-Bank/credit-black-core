@@ -19,7 +19,6 @@ async function bootstrap() {
       'Documentação das rotas do Back-end do projeto Credit Black Core. Esta documentação será usada para tirar quaisquer dúvidas que vocês tenham a respeito das rotas e casos de uso do back-end',
     )
     .setVersion('1.0')
-    .addTag('Credit Black Core')
     .build();
   const document = SwaggerModule.createDocument(app, options);
   SwaggerModule.setup('api', app, document);
