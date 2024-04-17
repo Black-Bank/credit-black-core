@@ -1,7 +1,7 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './auth.dto';
-import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 
 @ApiTags('auth')
@@ -10,7 +10,10 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('token')
-  @ApiOperation({ summary: 'Obter token de autenticação' })
+  @ApiOperation({
+    summary: 'Obter token de autenticação',
+  })
+  @ApiBearerAuth('AUTH_HEADER')
   @ApiBody({
     description: 'Credenciais de autenticação do usuário',
     schema: {
