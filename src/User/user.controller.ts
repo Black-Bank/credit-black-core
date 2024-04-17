@@ -28,7 +28,7 @@ export class UserController {
     },
   })
   @Post('signup')
-  signup(@Body() userDTO: UserDTO) {
+  signUp(@Body() userDTO: UserDTO) {
     return this.userService.registerUser(userDTO);
   }
 }
