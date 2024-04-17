@@ -1,7 +1,7 @@
 import { Body, Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthDTO } from './auth.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 
 @ApiTags('auth')
@@ -10,8 +10,22 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('token')
+  @ApiOperation({ summary: 'Obter token de autenticação' })
+  @ApiBody({
+    description: 'Credenciais de autenticação do usuário',
+    schema: {
+      properties: {
+        email: {
+          example: 'example@example.com',
+        },
+        password: {
+          example: 'senha123',
+        },
+      },
+    },
+  })
   @UseGuards(AuthGuard)
-  getAuthToken(@Body() user: AuthDTO): { token: string } {
-    return this.authService.auth(user);
+  async getAuthToken(@Body() user: AuthDTO): Promise<{ token: string }> {
+    return await this.authService.auth(user);
   }
 }
