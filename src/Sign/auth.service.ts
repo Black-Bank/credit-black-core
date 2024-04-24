@@ -1,8 +1,23 @@
+import Crypto from 'src/Guard/Crypto.service';
+
 export class AuthService {
-  auth({ email, password }: { email: string; password: string }): string {
+  auth({
+    email,
+    password,
+    timestamp,
+  }: {
+    email: string;
+    password: string;
+    timestamp: number;
+  }): string {
+    const criptoService = new Crypto();
     if (email && password) {
-      const token =
-        '2ef7bde608ce5404e97d5f042f95f89f1c232871df1eceb79025664b9fa9f0d2';
+      const jsonToken = JSON.stringify({
+        email: email,
+        exp: timestamp + 60 * 1000 * 60,
+      });
+      const token = criptoService.encrypt(jsonToken);
+
       return token;
     } else {
       return '';
