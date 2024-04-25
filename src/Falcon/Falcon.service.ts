@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { IUser } from './types';
+import { IResponse, IUser } from './types';
 
 export class FalconService {
   private client: MongoClient;
@@ -34,6 +34,14 @@ export class FalconService {
     return user;
   }
 
+  async createUser(newUser: IUser): Promise<IResponse> {
+    try {
+      await this.userCollection.insertOne(newUser);
+      return { status: 200, message: 'User created successfully' };
+    } catch (error) {
+      return { status: 403, message: error.message };
+    }
+  }
   async close(): Promise<void> {
     await this.client.close();
   }

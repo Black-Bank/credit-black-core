@@ -1,6 +1,6 @@
 import { FalconService } from 'src/Falcon/Falcon.service';
 import { IAuthError } from 'src/Falcon/types';
-import bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import Crypto from 'src/Guard/Crypto.service';
 
 export class AuthService {
@@ -15,18 +15,15 @@ export class AuthService {
   }): Promise<string | IAuthError> {
     const criptoService = new Crypto();
     const falconService = new FalconService();
-    console.log('init', await bcrypt.hash('init', 10));
 
     if (email && password) {
-      console.log('inside');
       try {
         await falconService.connect();
         const user = await falconService.getUserByEmail(email);
-        console.log('user', user);
-        if (user) {
-          console.log('here');
 
-          const passwordMatch = await bcrypt.compare(password, user.password);
+        if (user) {
+          const passwordMatch = bcrypt.compareSync(password, user.password);
+
           if (passwordMatch) {
             const jsonToken = JSON.stringify({
               email: email,
@@ -42,7 +39,10 @@ export class AuthService {
           return { status: 401, message: 'Invalid Credentials' };
         }
       } catch (error) {
-        return { status: 500, message: 'Server Error' };
+        return {
+          status: 403,
+          message: error.message,
+        };
       } finally {
         await falconService.close();
       }
