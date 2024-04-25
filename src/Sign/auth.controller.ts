@@ -3,6 +3,7 @@ import { AuthService } from './auth.service';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 import CryptoService from 'src/Guard/Crypto.service';
 import { IUserSign } from './types';
+import { IAuthError } from 'src/Falcon/types';
 
 @Controller('login')
 export class AuthController {
@@ -13,7 +14,7 @@ export class AuthController {
 
   @Get('token')
   @UseGuards(AuthGuard)
-  getAuthToken(@Body('token') token: string): string {
+  getAuthToken(@Body('token') token: string): Promise<string | IAuthError> {
     const user: IUserSign = JSON.parse(this.cryptoService.decrypt(token));
 
     const email = user.email;

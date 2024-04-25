@@ -12,9 +12,13 @@ class Crypto {
 
   public decrypt(ciphertext: string): string {
     const key = CryptoJS.enc.Hex.parse(process.env.AUTH_PRIVATE_KEY);
+
     const iv = CryptoJS.enc.Hex.parse(process.env.IV);
+
     const bytes = CryptoJS.AES.decrypt(ciphertext, key, { iv });
+
     const plaintext = bytes.toString(CryptoJS.enc.Utf8);
+
     return plaintext;
   }
 }
