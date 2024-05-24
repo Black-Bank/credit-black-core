@@ -1,9 +1,11 @@
 export interface IUser {
+  identifier: string;
   email: string;
   name: string;
-  lastname: string;
+  cellphone: string;
   password: string;
   amount: string;
+  createdAt: string;
 }
 
 export interface IAuthError {

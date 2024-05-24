@@ -19,7 +19,7 @@ export class CreateUserController {
     return this.createUserService.getToken();
   }
 
-  @Post('user')
+  @Post('create-user')
   @UseGuards(AuthGuard)
   createUser(@Body('token') token: string): Promise<string | IAuthError> {
     const user: IUser = JSON.parse(this.cryptoService.decrypt(token));
@@ -27,12 +27,14 @@ export class CreateUserController {
     const userJson = {
       email: user.email,
       name: user.name,
-      lastname: user.lastname,
+      cellphone: user.cellphone,
       password: bcrypt.hashSync(
         user.password,
         Number(process.env.BCRYPT_ROUND),
       ),
       amount: user.amount,
+      createdAt: user.createdAt,
+      identifier: user.identifier,
     };
     return this.createUserService.createUser(userJson);
   }
