@@ -34,6 +34,11 @@ export class FalconService {
     return user;
   }
 
+  async getUserByIdentifier(identifier: string): Promise<IUser> {
+    const user = await this.userCollection.findOne({ identifier });
+    return user;
+  }
+
   async createUser(newUser: IUser): Promise<IResponse> {
     try {
       await this.userCollection.insertOne(newUser);

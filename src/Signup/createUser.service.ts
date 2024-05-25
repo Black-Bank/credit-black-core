@@ -12,7 +12,10 @@ export class CreateUserService {
     try {
       await this.falconService.connect();
       const hasUser = await this.falconService.getUserByEmail(userData.email);
-      if (hasUser) {
+      const hasIdentifier = await this.falconService.getUserByIdentifier(
+        userData.identifier,
+      );
+      if (hasUser || hasIdentifier) {
         return { status: 409, message: 'user already exists' };
       }
       await this.falconService.createUser(userData);
