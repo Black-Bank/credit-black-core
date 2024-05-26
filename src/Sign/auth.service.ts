@@ -26,7 +26,7 @@ export class AuthService {
 
           if (passwordMatch) {
             const jsonToken = JSON.stringify({
-              email: identifier,
+              identifier: identifier,
               exp: timestamp + 60 * 1000 * 60,
             });
 
