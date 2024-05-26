@@ -1,4 +1,4 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { Body, Controller, Put, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 import CryptoService from 'src/Guard/Crypto.service';
@@ -12,7 +12,7 @@ export class AuthController {
     private readonly cryptoService: CryptoService,
   ) {}
 
-  @Get('token')
+  @Put('token')
   @UseGuards(AuthGuard)
   getAuthToken(@Body('token') token: string): Promise<string | IAuthError> {
     const user: IUserSign = JSON.parse(this.cryptoService.decrypt(token));
