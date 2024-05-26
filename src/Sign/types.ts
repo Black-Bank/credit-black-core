@@ -1,5 +1,5 @@
 export interface IUserSign {
-  email: string;
+  identifier: string;
   password: string;
   timestamp: number;
 }

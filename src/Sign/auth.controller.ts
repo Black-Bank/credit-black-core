@@ -17,7 +17,7 @@ export class AuthController {
   getAuthToken(@Body('token') token: string): Promise<string | IAuthError> {
     const user: IUserSign = JSON.parse(this.cryptoService.decrypt(token));
 
-    const email = user.email;
+    const email = user.identifier;
     const password = user.password;
     const timestamp = user.timestamp;
     return this.authService.auth({ email, password: password, timestamp });
