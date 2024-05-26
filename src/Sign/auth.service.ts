@@ -1,5 +1,5 @@
 import { FalconService } from 'src/Falcon/Falcon.service';
-import { IAuthError } from 'src/Falcon/types';
+import { IAuthError, IAuthResponse } from 'src/Falcon/types';
 import * as bcrypt from 'bcrypt';
 import Crypto from 'src/Guard/Crypto.service';
 
@@ -12,7 +12,7 @@ export class AuthService {
     identifier: string;
     password: string;
     timestamp: number;
-  }): Promise<string | IAuthError> {
+  }): Promise<IAuthResponse | IAuthError> {
     const criptoService = new Crypto();
     const falconService = new FalconService();
 
@@ -31,7 +31,7 @@ export class AuthService {
             });
 
             const token = criptoService.encrypt(jsonToken);
-            return token;
+            return { status: 200, token: token };
           } else {
             return { status: 401, message: 'Invalid Credentials' };
           }

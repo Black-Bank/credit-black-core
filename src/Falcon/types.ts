@@ -12,5 +12,9 @@ export interface IAuthError {
   status: number;
   message: string;
 }
+export interface IAuthResponse {
+  status: number;
+  token: string;
+}
 
 export interface IResponse extends IAuthError {}
