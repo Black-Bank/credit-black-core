@@ -5,28 +5,28 @@ import Crypto from 'src/Guard/Crypto.service';
 
 export class AuthService {
   async auth({
-    email,
+    identifier,
     password,
     timestamp,
   }: {
-    email: string;
+    identifier: string;
     password: string;
     timestamp: number;
   }): Promise<string | IAuthError> {
     const criptoService = new Crypto();
     const falconService = new FalconService();
 
-    if (email && password) {
+    if (identifier && password) {
       try {
         await falconService.connect();
-        const user = await falconService.getUserByEmail(email);
+        const user = await falconService.getUserByIdentifier(identifier);
 
         if (user) {
           const passwordMatch = bcrypt.compareSync(password, user.password);
 
           if (passwordMatch) {
             const jsonToken = JSON.stringify({
-              email: email,
+              email: identifier,
               exp: timestamp + 60 * 1000 * 60,
             });
 
