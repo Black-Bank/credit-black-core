@@ -1,4 +1,4 @@
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 
 import { UserService } from './User.service';
@@ -10,7 +10,7 @@ export class UserController {
 
   @Get('me')
   @UseGuards(AuthGuard)
-  getMe(@Body('identifier') identifier: string): Promise<IUser | IError> {
+  getMe(@Query('identifier') identifier: string): Promise<IUser | IError> {
     return this.userService.getUser(identifier);
   }
 }
