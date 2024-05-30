@@ -35,6 +35,8 @@ export class CreateUserController {
       amount: user.amount,
       createdAt: user.createdAt,
       identifier: user.identifier,
+      loanValue: 0,
+      investedValue: 0,
     };
     return this.createUserService.createUser(userJson);
   }

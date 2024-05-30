@@ -18,7 +18,7 @@ export class FalconService {
         process.env.USER_CREDENTIALS_COLLECTION,
       );
     } catch (error) {
-      console.error('Err on connecting:', error.message);
+      console.log('Err on connecting:', error.message);
     }
   }
 
@@ -36,6 +36,7 @@ export class FalconService {
 
   async getUserByIdentifier(identifier: string): Promise<IUser> {
     const user = await this.userCollection.findOne({ identifier });
+
     return user;
   }
 
