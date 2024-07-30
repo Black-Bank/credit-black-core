@@ -16,6 +16,7 @@ export interface IPayment {
   createdAt: Date;
   value: number;
   status: string;
+  base64?: string;
 }
 
 export interface IAuthError {
