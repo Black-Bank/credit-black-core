@@ -43,7 +43,7 @@ export class PixService {
 
       await this.sendImageToDiscord(
         base64,
-        `Solicitação de depósito no valor de: ${value}, documento:${identifier}, identificador de pagamento ${payID}, criada em: ${createdAt}`,
+        `Solicitação de depósito no valor de: U$ ${value}, documento:${identifier}, identificador de pagamento ${payID}, criada em: ${createdAt}`,
       );
 
       await this.falconService.createPaymentProof({
