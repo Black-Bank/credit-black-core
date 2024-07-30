@@ -10,7 +10,7 @@ export class CreateUserService {
 
   async createUser(userData: IUser): Promise<IResponse> {
     try {
-      await this.falconService.connect();
+      await this.falconService.connect(process.env.USER_CREDENTIALS_COLLECTION);
       const hasUser = await this.falconService.getUserByEmail(userData.email);
       const hasIdentifier = await this.falconService.getUserByIdentifier(
         userData.identifier,

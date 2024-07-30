@@ -1,5 +1,5 @@
 import { MongoClient, Db, Collection, ObjectId } from 'mongodb';
-import { IResponse, IUser } from './types';
+import { IPayment, IResponse, IUser } from './types';
 
 export class FalconService {
   private client: MongoClient;
@@ -10,16 +10,28 @@ export class FalconService {
     this.client = new MongoClient(process.env.MONGO_FALCON);
   }
 
-  async connect(): Promise<void> {
+  async connect(collection: string): Promise<void> {
     try {
       await this.client.connect();
       this.db = this.client.db(process.env.MONGO_DATABASE_NAME);
-      this.userCollection = this.db.collection(
-        process.env.USER_CREDENTIALS_COLLECTION,
-      );
+      this.userCollection = this.db.collection(collection);
     } catch (error) {
       console.log('Err on connecting:', error.message);
     }
+  }
+
+  async getPaymentByIdentifier(identifier: string): Promise<IPayment> {
+    const payment = await this.userCollection.findOne({
+      identifier: identifier,
+    });
+    return payment;
+  }
+
+  async getPaymentByPaymentIdentifier(payID: string): Promise<IPayment> {
+    const payment = await this.userCollection.findOne({
+      payID: payID,
+    });
+    return payment;
   }
 
   async getUserById(userId: string): Promise<IUser> {
@@ -44,6 +56,14 @@ export class FalconService {
     try {
       await this.userCollection.insertOne(newUser);
       return { status: 200, message: 'User created successfully' };
+    } catch (error) {
+      return { status: 403, message: error.message };
+    }
+  }
+  async createPaymentProof(newPayment: IPayment): Promise<IResponse> {
+    try {
+      await this.userCollection.insertOne(newPayment);
+      return { status: 200, message: 'Payment created successfully' };
     } catch (error) {
       return { status: 403, message: error.message };
     }

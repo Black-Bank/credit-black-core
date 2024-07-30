@@ -18,7 +18,7 @@ export class AuthService {
 
     if (identifier && password) {
       try {
-        await falconService.connect();
+        await falconService.connect(process.env.USER_CREDENTIALS_COLLECTION);
         const user = await falconService.getUserByIdentifier(identifier);
 
         if (user) {

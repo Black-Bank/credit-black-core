@@ -9,7 +9,7 @@ export class UserService {
 
   async getUser(userIdentifier: string) {
     try {
-      await this.falconService.connect();
+      await this.falconService.connect(process.env.USER_CREDENTIALS_COLLECTION);
       const user = await this.falconService.getUserByIdentifier(userIdentifier);
       return {
         email: user.email,

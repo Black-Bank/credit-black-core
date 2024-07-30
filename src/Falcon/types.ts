@@ -10,6 +10,14 @@ export interface IUser {
   loanValue: number;
 }
 
+export interface IPayment {
+  identifier: string;
+  payID: string;
+  createdAt: Date;
+  value: number;
+  status: string;
+}
+
 export interface IAuthError {
   status: number;
   message: string;
