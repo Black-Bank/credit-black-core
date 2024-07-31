@@ -75,12 +75,12 @@ export class PixService {
     try {
       await this.falconService.connect(process.env.PAYMENT_COLLECTION);
 
-      const payment = await this.falconService.getPaymentByIdentifier({
-        identifier,
-        page,
-      });
+      const [payments, totalDocuments] = await Promise.all([
+        this.falconService.getPaymentByIdentifier({ identifier, page }),
+        this.falconService.getCountDocumentsByIdentifier(identifier),
+      ]);
 
-      return payment;
+      return { payments: payments, total: totalDocuments };
     } catch (error) {
       return {
         status: 403,

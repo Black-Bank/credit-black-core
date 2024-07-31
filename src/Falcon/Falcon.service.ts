@@ -32,10 +32,19 @@ export class FalconService {
       .find({
         identifier: identifier,
       })
+      .sort({ createdAt: -1 })
       .skip(Math.max(0, (page - 1) * pageLimit))
       .limit(pageLimit)
       .toArray();
     return payment;
+  }
+
+  async getCountDocumentsByIdentifier(identifier: string): Promise<number> {
+    const totalCount = await this.userCollection.countDocuments({
+      identifier: identifier,
+    });
+
+    return totalCount;
   }
 
   async getPaymentByPaymentIdentifier(payID: string): Promise<IPayment> {
