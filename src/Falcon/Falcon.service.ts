@@ -20,10 +20,21 @@ export class FalconService {
     }
   }
 
-  async getPaymentByIdentifier(identifier: string): Promise<IPayment> {
-    const payment = await this.userCollection.findOne({
-      identifier: identifier,
-    });
+  async getPaymentByIdentifier({
+    identifier,
+    page,
+  }: {
+    identifier: string;
+    page: number;
+  }): Promise<IPayment[]> {
+    const pageLimit = 10;
+    const payment = await this.userCollection
+      .find({
+        identifier: identifier,
+      })
+      .skip(Math.max(0, (page - 1) * pageLimit))
+      .limit(pageLimit)
+      .toArray();
     return payment;
   }
 
@@ -68,6 +79,7 @@ export class FalconService {
       return { status: 403, message: error.message };
     }
   }
+
   async close(): Promise<void> {
     await this.client.close();
   }

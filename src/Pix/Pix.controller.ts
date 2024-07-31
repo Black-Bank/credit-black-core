@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from 'src/Guard/AuthGuard.guard';
 
 import { PixService } from './Pix.service';
@@ -9,14 +17,14 @@ import CryptoService from 'src/Guard/Crypto.service';
 @Controller('pix')
 export class PixController {
   constructor(
-    private readonly PixService: PixService,
+    private readonly pixService: PixService,
     private readonly cryptoService: CryptoService,
   ) {}
 
   @Get('code')
   @UseGuards(AuthGuard)
   getCode(): IPixData {
-    return this.PixService.getPixCode();
+    return this.pixService.getPixCode();
   }
 
   @Post('payment')
@@ -26,6 +34,15 @@ export class PixController {
       this.cryptoService.decrypt(token),
     );
 
-    return this.PixService.setPaymentProof(paymentRequest);
+    return this.pixService.setPaymentProof(paymentRequest);
+  }
+
+  @Get('payments')
+  @UseGuards(AuthGuard)
+  getPaymentsByIdentifier(
+    @Query('identifier') identifier: string,
+    @Query('page') page: number = 1,
+  ) {
+    return this.pixService.getPaymentProof({ identifier, page });
   }
 }

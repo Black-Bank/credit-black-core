@@ -65,6 +65,31 @@ export class PixService {
     }
   }
 
+  async getPaymentProof({
+    identifier,
+    page,
+  }: {
+    identifier: string;
+    page: number;
+  }) {
+    try {
+      await this.falconService.connect(process.env.PAYMENT_COLLECTION);
+
+      const payment = await this.falconService.getPaymentByIdentifier({
+        identifier,
+        page,
+      });
+
+      return payment;
+    } catch (error) {
+      return {
+        status: 403,
+        message: error.message,
+      };
+    } finally {
+      await this.falconService.close();
+    }
+  }
   getPixCode(): IPixData {
     return PIX_CODE;
   }
