@@ -75,7 +75,7 @@ export class PixService {
     try {
       await this.falconService.connect(process.env.PAYMENT_COLLECTION);
 
-w      const [payments, totalDocuments] = await Promise.all([
+      const [payments, totalDocuments] = await Promise.all([
         this.falconService.getPaymentByIdentifier({ identifier, page }),
         this.falconService.getCountDocumentsByIdentifier(identifier),
       ]);
